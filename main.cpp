@@ -4,6 +4,14 @@
 #include <vector>
 
 using namespace std;
+/*
+Aluno: Matheus Franklin Rodrigues Silva
+Matricula: 201665552AC
+
+Tamanho de dicionario usado: 6
+Tamanho do buffer: 4
+*/
+
 
 int menu()
 {
