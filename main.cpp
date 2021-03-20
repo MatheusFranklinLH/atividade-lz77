@@ -2,14 +2,15 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <fstream>
 
 using namespace std;
 /*
 Aluno: Matheus Franklin Rodrigues Silva
 Matricula: 201665552AC
 
-Tamanho de dicionario usado: 6
-Tamanho do buffer: 4
+Tamanho de dicionario usado: 15
+Tamanho do buffer: 8
 */
 
 
@@ -89,8 +90,8 @@ string comprimir(string codigo)
     int cursor = 0;
     int tamCodigo = codigo.size();
 
-    int tamDic = 6;
-    int tamBuf = 4;
+    int tamDic = 15;
+    int tamBuf = 8;
 
     string resultado;
 
@@ -120,32 +121,50 @@ string descomprimir(string codigo)
 
     string resultado;
     string aux1, aux2;
-    int i1, i2, tamR;
+    int i1, i2, tamR, cont1, cont2;
+
 
     while(cursor < tamCodigo)
     {
 
+        aux1.clear();
+        aux2.clear();
         tamR = resultado.size();
-        aux1 = codigo[cursor+1];
-        aux2 = codigo[cursor+3];
+        cont1 = 0;
+        cont2 = 0;
+        while(codigo[cursor+1+cont1] != ',')
+        {
+            aux1 = aux1 + codigo[cursor+1+cont1];
+            cont1++;
+        }
+        cont1--;
+
+
+        while(codigo[cursor+3+cont1+cont2] != ',')
+        {
+            aux2 = aux2 + codigo[cursor+3+cont1+cont2];
+            cont2++;
+        }
+        cont2--;
+
         i1 = stoi(aux1);
         i2 = stoi(aux2);
 
         if(i2 ==0)
         {
-            resultado = resultado + codigo[cursor+5];
+            resultado = resultado + codigo[cursor+cont1+cont2+5];
         }else if(i2 > i1)
         {
             aux1 = resultado.substr(tamR - i1, i1);
             aux2 = resultado.substr(tamR - i1, i2 - i1);
-            resultado = resultado + aux1 + aux2 + codigo[cursor + 5];
+            resultado = resultado + aux1 + aux2 + codigo[cursor+cont1+cont2+5];
         }else
         {
-            resultado =  resultado + resultado.substr(tamR - i1, i2) + codigo[cursor+5];
+            resultado =  resultado + resultado.substr(tamR - i1, i2) + codigo[cursor+cont1+cont2+5];
         }
-        cout << codigo.substr(cursor, 7) << " : " << resultado <<endl;
+        cout << codigo.substr(cursor, 7+cont1+cont2) << " : " << resultado <<endl;
 
-        cursor = cursor + 7;
+        cursor = cursor +7+cont1 +cont2;
     }
 
     return resultado;
@@ -153,23 +172,37 @@ string descomprimir(string codigo)
 
 int main()
 {
+    string f;
+    cout << "Digite o nome do arquivo a ser lido: (arquivo deve estar no diretório do main.cpp)" <<endl;
+    getline (cin, f);
 
-    while(menu()!=0)
+    ifstream file;
+    string linha, codigo;
+
+    file.open(f);
+
+    if(file.is_open())
     {
-        string codigo;
-        cout << "Digite a string que deseja comprimir: " <<endl;
-        getline (cin, codigo);
-
-        codigo = comprimir(codigo);
-        cout << codigo << endl;
-
-        cout << "Descomprimir para teste ? 1-s|2-n" << endl;
-        int op;
-        cin >> op;
-        cin.ignore(256, '\n');
-
-        if(op==1)
-            cout << descomprimir(codigo) << endl;
+       while(getline(file, linha))
+       {
+           codigo = codigo+linha;
+       }
+    }else
+    {
+        cout << "Não foi possível abrir o arquivo" << endl;
+        return 0;
     }
+
+
+    codigo = comprimir(codigo);
+    cout << codigo << endl;
+
+    cout << "Descomprimir para teste ? 1-s|2-n" << endl;
+    int op;
+    cin >> op;
+
+    if(op==1)
+        cout << descomprimir(codigo) << endl;
+
     return 0;
 }
