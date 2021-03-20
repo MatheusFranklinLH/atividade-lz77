@@ -7,3 +7,5 @@ Matrícula: 201665552AC
 
 Tamanho do dicionário usado: 15
 Tamanho do buffer usado: 8
+
+Leitura de arquivo no mesmo diretório
