@@ -14,21 +14,6 @@ Tamanho do buffer: 8
 */
 
 
-int menu()
-{
-    int m;
-    cout << "\n>>>>> Menu <<<<<" << endl;
-    cout << "1 - Comprimir string" << endl;
-    cout << "0 -  Sair" << endl;
-    cin >> m;
-    cin.ignore(256, '\n');
-
-    if(m > 1 || m < 0)
-        m = 0;
-
-    return m;
-}
-
 int min(int a, int b)
 {
     if(a<b)
